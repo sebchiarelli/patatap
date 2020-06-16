@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="js/lib/paper-full.js"></script>
+    <script type="text/javascript" src="js/lib/howler.js"></script>
+    <title>Patatap</title>
+    <link rel="stylesheet" href="css/style.css">
+<!-- Define inlined PaperScript associate it with myCanvas -->
+<script type="text/paperscript" canvas="myCanvas">
+    var keyData = {
+        i: {
+            color: "purple",
+            sound: new Howl({
+                src: ['sounds/rrroua.mp3']
+              })
+        },
+        b: {
+            color: "grey",
+            sound: new Howl({
+                src: ['sounds/rouaroua.mp3']
+              })
+        },
+        o: {
+            color: "grey",
+            sound: new Howl({
+                src: ['sounds/obalie.ogg']
+              })
+        },
+    }
+    
+
+ 
+     
+var circles = [];
+
+function onKeyDown(event) {
+    if(keyData[event.key]){
+    var maxPoint = new Point(view.size.width, view.size.height);
+    var randomPoint = Point.random();
+    var point = maxPoint * randomPoint;
+    var newCircle = new Path.Circle(point, 200);
+    newCircle.fillColor = keyData[event.key].color;
+    circles.push(newCircle);
+    keyData[event.key].sound.play()
+    }
+    
+}
+function onFrame(event) {
+    for(var i = 0; i < circles.length; i++){
+        console.log(circles[i]);
+        circles[i].fillColor.hue += 1;
+        circles[i].scale(.9);
+        if(circles[i].area < 0){
+            circles.splice(i, 1);
+            circles[i].remove();
+        } 
+    }
+}
+
+</script>
+</head>
+<body>
+    <canvas id="myCanvas" resize></canvas>
+    <script src="js/patatap.js"></script>
+</body>
+</html>
